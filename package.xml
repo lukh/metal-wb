@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
-  <name>Fasteners Workbench</name>
+  <name>Metal Workbench</name>
   <description>Design tools for welding parts.</description>
   <version>0.0.1</version>
   <date>2022-10-26</date>
@@ -15,6 +15,9 @@
       <classname>MetalWorkbench</classname>
       <subdirectory>./</subdirectory>
       <tag>metalworkbench</tag>
+      <tag>metal</tag>
+      <tag>welding</tag>
+      <tag>assembly</tag>
     </workbench>
   </content>
 
