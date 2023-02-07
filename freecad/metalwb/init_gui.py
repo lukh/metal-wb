@@ -85,6 +85,7 @@ class MetalWorkbench(Gui.Workbench):
             # If no article then create a boolean one called "first_startup" with True value
             p.SetBool("first_startup", is_first_startup)
         # now show a QMessageBox if this is the first startup
+        is_first_startup = False # remove when a tutorial is ready to show
         if is_first_startup is True:
             App.Console.PrintMessage("Welcome, this is your first time with this workbench\n")
             from PySide import QtGui
