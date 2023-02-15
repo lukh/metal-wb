@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="10.587942mm"
-   height="11.849455mm"
-   viewBox="0 0 10.587942 11.849455"
+   width="48"
+   height="48"
+   viewBox="0 0 12.7 12.7"
    version="1.1"
    id="svg22939"
-   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="overlap.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="corner.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,13 +24,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.75187991"
-     inkscape:cx="12.634996"
-     inkscape:cy="10.639997"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1366"
-     inkscape:window-y="27"
+     inkscape:zoom="8.5065501"
+     inkscape:cx="36.089836"
+     inkscape:cy="29.683009"
+     inkscape:window-width="2560"
+     inkscape:window-height="1403"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
@@ -39,10 +39,10 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-94.644418,-145.74234)">
+     transform="translate(-94.899476,-144.39689)">
     <g
        id="g271636"
-       transform="matrix(-1,0,0,1,-332.96552,-175.21586)">
+       transform="matrix(-1.1994879,0,0,1.071773,-418.01347,-199.59744)">
       <g
          id="g4063-3"
          transform="matrix(0.35826245,0,0,0.358695,-441.06398,313.4256)"

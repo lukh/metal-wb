@@ -20,6 +20,6 @@ import os
 import FreeCAD
 from .version import __version__
 
-ICONPATH = os.path.join(os.path.dirname(__file__), "resources")
 RESOURCESPATH = os.path.join(os.path.dirname(__file__), "resources")
+ICONPATH = os.path.join(RESOURCESPATH, "icons")
 
