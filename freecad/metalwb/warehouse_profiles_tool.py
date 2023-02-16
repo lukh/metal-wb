@@ -404,6 +404,8 @@ class Box(QtGui.QDialog):
         """
         Generate one or more profiles according to selected edges.
         """
+        # Transaction
+        App.ActiveDocument.openTransaction("Add Profile")
         # Selected object and sub-object
         selection_list = Gui.Selection.getSelectionEx()
         selected_obj = selection_list[0]
@@ -486,6 +488,8 @@ class Box(QtGui.QDialog):
                 # or the one which is active
                 dm = App.activeDocument()
             dm.recompute()
+
+            App.ActiveDocument.commitTransaction()
             #print(dm.Objects)
 
 
@@ -537,7 +541,7 @@ class Box(QtGui.QDialog):
         """
         Associates each dimension of a profile with its value, contained in the "data" list
         """
-        print("flag update_data")
+        # print("flag update_data")
         self.data = extract_data(self.lib_path, self.fam, self.dim)
 
         try:
@@ -580,7 +584,7 @@ class Box(QtGui.QDialog):
         """
 
         """
-        print("flag update_box")
+        # print("flag update_box")
         self.sb_height.setProperty("value", self.height)
         self.sb_width.setProperty("value", self.width)
         self.sb_main_thickness.setProperty("value", self.main_thickness)
@@ -1519,7 +1523,7 @@ class _CommandWarehouseProfiles:
         Gui.Selection.addObserver(obs)
         form.show()
         form.exec_()
-
+        print("after form.exec_")
         Gui.Selection.removeObserver(obs)
 
 
