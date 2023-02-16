@@ -68,17 +68,20 @@ class Corner:
             return
         if len(fp.TrimmingBoundary) == 0:
             return
+        
+        cut_shapes = []
+        
         if fp.CornerType == "End Trim":
             if fp.CutType == "Coped cut":
                 shapes = [x[0].Shape for x in fp.TrimmingBoundary]
                 shps = BOPTools.SplitAPI.slice(fp.TrimmedBody.Shape, shapes, mode="Split")
-                cut_shape = Part.Shape()
                 for solid in shps.Solids:
                     x = fp.TrimmedBody.Shape.CenterOfGravity.x
                     y = fp.TrimmedBody.Shape.CenterOfGravity.y
                     z = fp.TrimmedBody.Shape.CenterOfGravity.z
                     if not solid.BoundBox.isInside(x, y, z):
-                        cut_shape = cut_shape.fuse(solid)
+                        cut_shapes.append(Part.Shape(solid))
+                
             elif fp.CutType == "Simple cut":
                 cut_shape = Part.Shape()
                 for link in fp.TrimmingBoundary:
@@ -87,8 +90,7 @@ class Corner:
                         face = part.getSubObject(sub)
                         if isinstance(face.Surface, Part.Plane):
                             shp = self.getOutsideCV(face, fp.TrimmedBody.Shape)
-                            cut_shape = cut_shape.fuse(shp)
-            self.makeShape(fp, cut_shape)
+                            cut_shapes.append(shp)
         
         elif fp.CornerType == "End Miter":
             doc = App.activeDocument()
@@ -101,7 +103,6 @@ class Corner:
             trimming_boundary_edges = []
             for target in bounds_target:
                 trimming_boundary_edges.append(doc.getObject(target[0].Name).getSubObject(target[1][0]))
-            cut_shape = Part.Shape()
             for edge2 in trimming_boundary_edges:
                 end1 = edge1.Vertexes[-1].Point
                 start1 = edge1.Vertexes[0].Point
@@ -137,8 +138,14 @@ class Corner:
                 normal = Part.Plane(p1, p2, p3).toShape().normalAt(0,0)
                 cutplane = Part.makePlane(10, 10, p1, vec1, normal)
                 cutplane.rotate(p1, normal, -90+bisect)
-                cut_shape = cut_shape.fuse(self.getOutsideCV(cutplane, fp.TrimmedBody.Shape))
-            self.makeShape(fp, cut_shape)
+                cut_shapes.append(self.getOutsideCV(cutplane, fp.TrimmedBody.Shape))
+        
+        if len(cut_shapes) > 0:
+            cut_shape = Part.Shape(cut_shapes[0])
+            for sh in cut_shapes[1:]:
+                cut_shape = cut_shape.fuse(sh)
+        
+        self.makeShape(fp, cut_shape)
 
     def getOutsideCV(self, cutplane, shape):
         cv = ArchCommands.getCutVolume(cutplane, shape, clip=False, depth=0.0)
