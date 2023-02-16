@@ -19,6 +19,7 @@ else:
     # \endcond
 
 
+
 class _CommandTrim:
     """This tool create a Draft Line based on the target of the prfile then activated Draft Trimex on it
     The difference between the target and the Draft Line allow us to add offset to profile object"""
@@ -40,6 +41,7 @@ class _CommandTrim:
 
     def IsActive(self):
         if App.ActiveDocument:
+            self.doc = App.ActiveDocument
             if len(Gui.Selection.getSelection()) == 1:
                 if hasattr(Gui.Selection.getSelection()[0], 'Target'):
                     return True
@@ -54,8 +56,11 @@ class _CommandTrim:
         self.original_length = self.part.Height.Value
         start_point = App.Vector()
         end_point = App.Vector(0, 0, self.original_length)
+        self.doc.openTransaction("MetalWB Trim/extend")
         self.draft_line = Draft.makeLine(start_point, end_point)
         self.draft_line.Placement = self.part.Placement
+        self.draft_line.ViewObject.LineWidth = 10.00
+        self.draft_line.ViewObject.PointSize = 15.00
         self.draft_line.recompute()
         self.start = self.draft_line.Start
         self.end = self.draft_line.End
@@ -90,6 +95,7 @@ class _CommandTrim:
             App.Console.PrintWarning("Please, contact workbench developper about this case")
 
         App.ActiveDocument.removeObject(self.draft_line.Name)
+        self.doc.commitTransaction()
         App.activeDocument().recompute(None,True,True)
 
     
