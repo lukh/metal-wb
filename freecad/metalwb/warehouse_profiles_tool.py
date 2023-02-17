@@ -1,5 +1,8 @@
 # coding: utf-8
 # This function is based on WarehouseProfiles.py macro, by Vincent Ballu (2021)
+# Quentin Plisson
+# Jonathan Wiedemann
+# Mario52
 
 # Import statements
 import os
@@ -8,6 +11,7 @@ import Part
 import math
 from freecad.metalwb import ICONPATH
 from freecad.metalwb import RESOURCESPATH
+from freecad.metalwb import WAREHOUSEPATH
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -81,25 +85,31 @@ class Box(QtGui.QDialog):
         - checkbox = cb.
         """
 
-        # Main window
-        win_width = 270
-        win_height = 400
-        win_location_x = 250
-        win_location_y = 250
-
         self.setWindowTitle("Profile Warehouse")
-        # self.setWindowIcon(QtGui.QIcon("warehouse_profiles.svg"))
-        self.setGeometry(win_location_x, win_location_y, win_width, win_height)
-        self.setMaximumWidth(500)
+        self.setWindowIcon(QtGui.QIcon(os.path.join(ICONPATH, "warehouse_profiles.svg")))
 
         QtCore.Qt.WA_DeleteOnClose
 
         """ 'Apply a profile' group box """
 
+        # graphics View
+        ####Screen Graphic BitMap
+        ##https://doc.qt.io/qtforpython/PySide2/QtCore/Qt.html
+        self.graphicsView = QtGui.QGraphicsView()
+        self.graphicsView.setFixedSize(320,160)
+        self.pic = QtGui.QPixmap()
+        self.pic.load(os.path.join(WAREHOUSEPATH,'Warehouse.png'))  #indoor_Icon_b64  # bmp converti
+        self.scene = QtGui.QGraphicsScene()
+        self.scene.addPixmap(QtGui.QPixmap(self.pic))
+        self.graphicsView.setScene(self.scene)
+        # graphics View
+
+        # Hbox for graphics View
+        hbox_img = QtGui.QHBoxLayout()
+        hbox_img.addWidget(self.graphicsView)
+
         # OK button
         btn_ok = QtGui.QPushButton("OK")
-        # btn_ok.setIcon(QtGui.QIcon("check_circle_outline_black_24dp.svg"))
-        # btn_ok.setIconSize(QtCore.Qt.QSize(40.40))
         btn_ok.setMinimumHeight(40)
         btn_ok.clicked.connect(self.onclick_ok)
 
@@ -118,7 +128,6 @@ class Box(QtGui.QDialog):
         new_font = QtGui.QFont(self.lbl_family.font())
         new_font.setPointSize(10)
         self.lbl_family.setFont(new_font)
-        self.lbl_family.move(50, 8)
 
         # Families section combo box
         self.combo_family = QtGui.QComboBox(self)
@@ -126,7 +135,8 @@ class Box(QtGui.QDialog):
         self.combo_family.addItems(self.fams_list)
         self.combo_family.setCurrentIndex(self.fams_list.index(self.fam))
         self.combo_family.activated[str].connect(self.on_combo_family_changed)
-        self.combo_family.move(10, 30)
+        self.combo_family.textHighlighted.connect(self.on_FamilyChange)
+        self.on_FamilyChange(self.fam)
 
         # Hbox for families
         hbox_fam = QtGui.QHBoxLayout()
@@ -138,7 +148,7 @@ class Box(QtGui.QDialog):
         new_font = QtGui.QFont(self.lbl_size.font())
         new_font.setPointSize(10)
         self.lbl_size.setFont(new_font)
-        self.lbl_size.move(190, 8)
+        # self.lbl_size.move(190, 8)
 
         # Size section combo box
         self.combo_size = QtGui.QComboBox(self)
@@ -146,7 +156,6 @@ class Box(QtGui.QDialog):
         self.combo_size.addItems(self.dims_list)
         self.combo_size.setCurrentIndex(self.dims_list.index(self.dim))
         self.combo_size.activated[str].connect(self.on_combo_size_changed)
-        self.combo_size.move(160, 30)
 
         # Hbox for size section
         hbox_size = QtGui.QHBoxLayout()
@@ -155,14 +164,13 @@ class Box(QtGui.QDialog):
 
         # VBox for apply group
         vbox_apply = QtGui.QVBoxLayout()
+        vbox_apply.addLayout(hbox_img)
         vbox_apply.addLayout(hbox_cmd)
         vbox_apply.addLayout(hbox_fam)
         vbox_apply.addLayout(hbox_size)
 
         # Create 'Apply a profile' group box
         self.group_box_apply = QtGui.QGroupBox("Apply a profile on selected wires :")
-        self.group_box_apply.setMaximumHeight(500)
-        self.group_box_apply.setMaximumWidth(250)
         self.group_box_apply.setLayout(vbox_apply)
 
         """ 'Dimmensions setting' group box """
@@ -298,8 +306,6 @@ class Box(QtGui.QDialog):
 
         # 'Dimmensions settings' group box creation
         self.group_box_dim = QtGui.QGroupBox("Dimmensions settings")
-        self.group_box_dim.setMaximumHeight(600)
-        self.group_box_dim.setMaximumWidth(250)
         self.group_box_dim.setLayout(vbox_dim)
 
         """ Checkboxes group box """
@@ -309,40 +315,34 @@ class Box(QtGui.QDialog):
         cb1 = self.cb_make_fillet
         cb1.setChecked(True)
         cb1.clicked.connect(self.on_checkbox1_active)
-        cb1.move(10, 275)
 
         # Checkbox 2 / Reverse attachment
         self.cb_reverse_attachment = QtGui.QCheckBox("Reverse Attachment", self)
         cb2 = self.cb_reverse_attachment
         cb2.clicked.connect(self.on_checkbox2_active)
-        cb2.move(140, 275)
 
         # Checkbox 3 / Height centered
         self.cb_height_centered = QtGui.QCheckBox("Height Centered", self)
         cb3 = self.cb_height_centered
         cb3.setChecked(True)
         cb3.clicked.connect(self.on_checkbox3_active)
-        cb3.move(10, 300)
 
         # Checkbox 4 / Widht centered
         self.cb_width_centered = QtGui.QCheckBox("Width Centered", self)
         cb4 = self.cb_width_centered
         cb4.setChecked(True)
         cb4.clicked.connect(self.on_checkbox4_active)
-        cb4.move(140, 300)
 
         # Checkbox 5 / Size in object name
         self.size_in_name = QtGui.QCheckBox("Size in object name", self)
         cb5 = self.size_in_name
         cb5.setChecked(True)
         cb5.clicked.connect(self.on_checkbox5_active)
-        cb5.move(10, 325)
 
         # Checkbox 6 / Combined bevel
         self.combined_bevel = QtGui.QCheckBox("Combined Bevels", self)
         cb6 = self.combined_bevel
         cb6.clicked.connect(self.on_checkbox6_active)
-        cb6.move(140, 325)
 
         # Layout
         hbox_12 = QtGui.QHBoxLayout()
@@ -361,8 +361,6 @@ class Box(QtGui.QDialog):
         vbox_check.addLayout(hbox_56)
 
         self.group_box_check = QtGui.QGroupBox("Checkboxes")
-        self.group_box_check.setMaximumHeight(600)
-        self.group_box_check.setMaximumWidth(250)
         self.group_box_check.setLayout(vbox_check)
 
         """ Attachment group box """
@@ -372,7 +370,6 @@ class Box(QtGui.QDialog):
         new_font = QtGui.QFont(self.lbl_attach.font())
         new_font.setPointSize(10)
         self.lbl_attach.setFont(new_font)
-        self.lbl_attach.move(10, 250)
         self.update_selection("", "")
 
         # VBox
@@ -381,8 +378,6 @@ class Box(QtGui.QDialog):
 
         # 'Attachment' group box creation
         self.group_box_attach = QtGui.QGroupBox("Attachment")
-        self.group_box_attach.setMaximumHeight(600)
-        self.group_box_attach.setMaximumWidth(250)
         self.group_box_attach.setLayout(vbox_attach)
 
         """ Vertical layout """
@@ -395,8 +390,6 @@ class Box(QtGui.QDialog):
 
         self.setLayout(vbox)
 
-        # self.show()
-
     def onclick_cancel(self):
         self.close()
 
@@ -406,105 +399,93 @@ class Box(QtGui.QDialog):
         """
         # Transaction
         App.ActiveDocument.openTransaction("Add Profile")
-        # Selected object and sub-object
         selection_list = Gui.Selection.getSelectionEx()
-        selected_obj = selection_list[0]
-        selected_obj_name = selected_obj.ObjectName
-        sub_list = selected_obj.SubObjects
-        print("Selected object : " + selected_obj_name)
-        # Indentation variable
-        indent = 0
-        for i in sub_list:
-            # Selected sub-element
-            selected_sub = sub_list[indent]
-            selected_sub_name = selected_obj.SubElementNames[indent]
-            print("Selected sub-object " + str(indent+1) + " : " + selected_sub_name)
-            # Definition of profile object name
-            if self.size_in_name:
-                obj_name = self.fam + "_" + self.dim + "_"
+        for selected_obj in selection_list:
+            indent = 0
+            sub_list = selected_obj.SubObjects
+            for i in sub_list:
+                self.makeProfile(selected_obj, sub_list, indent)
+                indent += 1
+        App.ActiveDocument.commitTransaction()
+        
+
+    def makeProfile(self, selected_obj, sub_list, indent):
+        selected_sub = sub_list[indent]
+        selected_sub_name = selected_obj.SubElementNames[indent]
+        print("Selected sub-object " + str(indent+1) + " : " + selected_sub_name)
+        # Definition of profile object name
+        if self.size_in_name:
+            obj_name = self.fam + "_" + self.dim + "_"
+        else:
+            obj_name = self.fam
+        # Create an object in current document
+        obj = App.ActiveDocument.addObject("Part::FeaturePython", obj_name)
+        obj.addExtension("Part::AttachExtensionPython")
+        # Create a ViewObject in current GUI
+        obj.ViewObject.Proxy = 0
+        view_obj = Gui.ActiveDocument.getObject(obj.Name)
+        view_obj.DisplayMode = "Flat Lines"
+        link_sub = ""
+        # "try" block generates an exception if no block is selected ("except" blocks below)
+        try:
+            # Tuple assignment for edge
+            feature = selected_obj.Object
+            link_sub = (feature, (selected_obj.SubElementNames[indent]))
+            edge_name = selected_obj.SubElementNames[indent]
+            lg = selected_sub.Length
+            obj.MapMode = "NormalToEdge"
+            obj.Support = (feature, edge_name)
+            #
+            if not self.reverse_attachment:
+                #print("Not reverse attachment")
+                obj.MapPathParameter = 1
             else:
-                obj_name = self.fam
-            # Create an object in current document
-            obj = App.ActiveDocument.addObject("Part::FeaturePython", obj_name)
-            obj.addExtension("Part::AttachExtensionPython")
-            # Create a ViewObject in current GUI
-            obj.ViewObject.Proxy = 0
-            view_obj = Gui.ActiveDocument.getObject(obj.Name)
-            view_obj.DisplayMode = "Flat Lines"
-            link_sub = ""
-            # "try" block generates an exception if no block is selected ("except" blocks below)
-            try:
-                # Tuple assignment for edge
-                feature = selected_obj.Object
-                link_sub = (feature, (selected_obj.SubElementNames[indent]))
-                edge_name = selected_obj.SubElementNames[indent]
-                lg = selected_sub.Length
-                obj.MapMode = "NormalToEdge"
-                obj.Support = (feature, edge_name)
-                #
-                if not self.reverse_attachment:
-                    print("Not reverse attachment")
-                    obj.MapPathParameter = 1
-                else:
-                    print("Reverse attachment")
-                    obj.MapPathParameter = 0
-                    obj.MapReversed = True
-                #
-                indent = indent + 1
-            # Exceptions
-            except NameError:
-                print("A variable is not defined.")
-            except AttributeError:
-                print("Error on the attribute assignment or reference fails.")
-            except ValueError:
-                print("A function gets an argument of correct type but improper value.")
-            except IndentationError:
-                print("There is an incorrect indentation.")
-            except:
-                print("Unidentified error.")
+                #print("Reverse attachment")
+                obj.MapPathParameter = 0
+                obj.MapReversed = True
+            #
+            indent = indent + 1
+        # Exceptions
+        except NameError:
+            print("A variable is not defined.")
+        except AttributeError:
+            print("Error on the attribute assignment or reference fails.")
+        except ValueError:
+            print("A function gets an argument of correct type but improper value.")
+        except IndentationError:
+            print("There is an incorrect indentation.")
+        except:
+            print("Unidentified error.")
 
-            # Abbreviation of parameters to call Profile class
-            wd = self.sb_width.value()
-            ht = self.sb_height.value()
-            mt = self.sb_main_thickness.value()
-            ft = self.sb_flange_thickness.value()
-            r1 = self.sb_radius1.value()
-            r2 = self.sb_radius2.value()
-            if link_sub == "": lg = self.sb_length.value()
-            wt = float(self.weight)
-            if self.fam == "Flat Sections" or self.fam == "Square": self.make_fillet = False
-            mf = self.make_fillet
-            hc = self.height_centered
-            wc = self.width_centered
-            bc = self.bevels_combined
+        # Abbreviation of parameters to call Profile class
+        wd = self.sb_width.value()
+        ht = self.sb_height.value()
+        mt = self.sb_main_thickness.value()
+        ft = self.sb_flange_thickness.value()
+        r1 = self.sb_radius1.value()
+        r2 = self.sb_radius2.value()
+        if link_sub == "": lg = self.sb_length.value()
+        wt = float(self.weight)
+        if self.fam == "Flat Sections" or self.fam == "Square": self.make_fillet = False
+        mf = self.make_fillet
+        hc = self.height_centered
+        wc = self.width_centered
+        bc = self.bevels_combined
 
-            Profile(obj, link_sub, wd, ht, mt, ft, r1, r2, lg, wt, mf, hc, wc, self.fam, bc)
+        Profile(obj, link_sub, wd, ht, mt, ft, r1, r2, lg, wt, mf, hc, wc, self.fam, bc)
 
-            # Recompute working document :
-            try:
-                # the one which contain selection,
-                dm = selection_list.Document
-            except:
-                # or the one which is active
-                dm = App.activeDocument()
-            dm.recompute()
-
-            App.ActiveDocument.commitTransaction()
-            #print(dm.Objects)
-
-
-
-    """
-    # Détection de collision
-    obj_to_check1 =
-    to_check_list = []
-        # Listing des objets
-    for obj in App.ActiveDocument.Objects:
-        print(str(obj.Name))
-    """
+        # Recompute working document :
+        try:
+            # the one which contain selection,
+            dm = selection_list.Document
+        except:
+            # or the one which is active
+            dm = App.activeDocument()
+        dm.recompute()
 
     def on_checkbox1_active(self, state):
         self.make_fillet = state
+        self.on_FamilyChange(self.combo_family.currentText())
 
     def on_checkbox2_active(self, state):
         self.reverse_attachment = state
@@ -521,8 +502,82 @@ class Box(QtGui.QDialog):
     def on_checkbox6_active(self, state):
         self.bevels_combined = state
 
+    def on_FamilyChange(self, txt):       # display the image in window 
+
+        if self.make_fillet:
+            if txt == "Equal Leg Angles":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Equal_Leg_Angles_Fillet.png'))#
+            elif txt == "Unequal Leg Angles":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Unequal_Leg_Angles_Fillet.png'))#
+            elif txt == "Flat Sections":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Flat_Sections.png'))
+            elif txt == "Square":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Square_Fillet.png'))
+            elif txt == "Square Hollow":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Square_Hollow_Fillet.png'))
+            elif txt == "Rectangular Hollow":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Rectangular_Hollow_Fillet.png'))
+            elif txt == "UPE":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'UPE_Fillet.png'))
+            elif txt == "UPN":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'UPN_Fillet.png'))
+            elif txt == "HEA":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEA_Fillet.png'))
+            elif txt == "HEB":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEB_Fillet.png'))
+            elif txt == "HEM":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEM_Fillet.png'))
+            elif txt == "IPE":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'IPE_Fillet.png'))
+            elif txt == "IPN":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'IPN_Fillet.png'))
+            elif txt == "Round bar":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Round_Bar.png'))
+            elif txt == "Pipe":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Pipe.png'))
+            else:
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'WareHouse.png'))
+        else:
+            if txt == "Equal Leg Angles":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Equal_Leg_Angles.png'))#
+            elif txt == "Unequal Leg Angles":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Unequal_Leg_Angles.png'))#
+            elif txt == "Flat Sections":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Flat_Sections.png'))
+            elif txt == "Square":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Square.png'))
+            elif txt == "Square Hollow":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Square_Hollow.png'))
+            elif txt == "Rectangular Hollow":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Rectangular_Hollow.png'))
+            elif txt == "UPE":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'UPE.png'))
+            elif txt == "UPN":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'UPN.png'))
+            elif txt == "HEA":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEA.png'))
+            elif txt == "HEB":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEB.png'))
+            elif txt == "HEM":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'HEM.png'))
+            elif txt == "IPE":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'IPE.png'))
+            elif txt == "IPN":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'IPN.png'))
+            elif txt == "Round bar":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Round_Bar.png'))
+            elif txt == "Pipe":
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'Pipe.png'))
+            else:
+                self.pic.load(os.path.join(WAREHOUSEPATH, 'WareHouse.png'))
+
+        self.scene.addPixmap(QtGui.QPixmap(self.pic))
+        self.graphicsView.setScene(self.scene)
+
+    
+
     def on_combo_family_changed(self, txt):
-        print("flag on_combo_family_changed")
+        self.on_FamilyChange( txt)
         self.fam = txt
         self.dims_list = listing_family_dimensions(self.lib_path, self.fam)
         self.dim = self.dims_list[0]
@@ -541,7 +596,6 @@ class Box(QtGui.QDialog):
         """
         Associates each dimension of a profile with its value, contained in the "data" list
         """
-        # print("flag update_data")
         self.data = extract_data(self.lib_path, self.fam, self.dim)
 
         try:
@@ -584,7 +638,6 @@ class Box(QtGui.QDialog):
         """
 
         """
-        # print("flag update_box")
         self.sb_height.setProperty("value", self.height)
         self.sb_width.setProperty("value", self.width)
         self.sb_main_thickness.setProperty("value", self.main_thickness)
@@ -598,19 +651,24 @@ class Box(QtGui.QDialog):
         objet sélectionné -> 1 de la liste
         edge -> sous-élément de l'objet
         """
-        print("flag update_selection")
+        obj_name = ''
         try:  # first run
-            selection_list = Gui.Selection.getSelectionEx()
-            selected_obj = selection_list[0]
-            edge_name = selected_obj.SubElementNames[0]
-            selected_obj_name = selected_obj.ObjectName
-            obj_name = "Attachment: " + selected_obj_name + " / " + edge_name
-        except:
-            obj_name = "Attachment: None                                          "
 
-        if new_obj and new_sub: obj_name = "Attachment: " + new_obj + " / " + new_sub
+            for sel in Gui.Selection.getSelectionEx():
+                selected_obj_name = sel.ObjectName
+                subs = ''
+                for sub in sel.SubElementNames:
+                    subs += '{},'.format(sub)
+
+                obj_name += selected_obj_name 
+                obj_name += " / "
+                obj_name += subs
+                obj_name += '\n'
+        except:
+            obj_name = "Attachment: None"
+
         self.lbl_attach.setText(obj_name)
-        print("Updated attachment :", obj_name)
+        #print("Updated attachment :", obj_name)
 
 
 class SelObserver:
@@ -621,10 +679,10 @@ class SelObserver:
     def __init__(self, form):
         self.form = form
 
-    def add_selection(self, doc, obj, sub, other):
+    def addSelection(self, doc, obj, sub, other):
         self.form.update_selection(obj, sub)
 
-    def clear_selection(self, other):
+    def clearSelection(self, other):
         self.form.update_selection("", "")
 
 
@@ -690,7 +748,7 @@ class Profile:
             obj.addProperty("App::PropertyBool", "UPN", "Profile", "UPE style or UPN style").UPN = True
             obj.addProperty("App::PropertyFloat", "FlangeAngle", "Profile").FlangeAngle = 4.57
 
-        if fam == "IPE" or fam == "HEA" or fam == "HEB" or type == "HEM":
+        if fam == "IPE" or fam == "HEA" or fam == "HEB" or fam == "HEM":
             obj.addProperty("App::PropertyBool", "IPN", "Profile", "IPE/HEA style or IPN style").IPN = False
             obj.addProperty("App::PropertyFloat", "FlangeAngle", "Profile").FlangeAngle = 8
         if fam == "IPN":
@@ -1374,15 +1432,13 @@ def listing_families(lib_path):
     tab = []
     pos = 0
     file_len = os.stat(lib_path).st_size
-    print("file: ", file_len)
     with open(lib_path, "r") as file:
         while pos < file_len:
             while True:
                 car = file.read(1)
                 if car == "*" or not car: break
-            # print (pos)
-            line = file.readline()  # famille trouvée
-
+            
+            line = file.readline()
             txt = line[:len(line) - 1]
             if txt: tab.append(txt)
             line = file.readline()
@@ -1431,11 +1487,10 @@ def extract_data(lib_path, fam, size):
             if str: tab.append(str)
             str = ""
             if car == "\n": break
-    # print(tab)
     return tab
 
 
-def search_index(lib_path, fam, type):
+def search_index(lib_path, fam, prop):
     """
     Finds the index of the data in the family
     """
@@ -1449,7 +1504,7 @@ def search_index(lib_path, fam, type):
         file.seek(pos4)
         line = file.readline().rstrip()
         typ = line.split("/")
-        ind = typ.index(type) + 1
+        ind = typ.index(prop) + 1
     return ind
 
 
@@ -1477,8 +1532,6 @@ def listing_family_dimensions(lib_path, fam):
             str = ""
             line = file.readline()
             car = file.read(1)
-    # tab.sort()
-    # print (tab)
     return tab
 
 class _CommandWarehouseProfiles:
@@ -1519,12 +1572,14 @@ class _CommandWarehouseProfiles:
         if self.lib_path == '':
             self.lib_path = os.path.join(RESOURCESPATH, "Profiles.txt")
         form = Box(self.lib_path)
+        Gui.Selection.clearSelection()
         obs = SelObserver(form)
         Gui.Selection.addObserver(obs)
+        Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')
         form.show()
         form.exec_()
-        print("after form.exec_")
         Gui.Selection.removeObserver(obs)
+        Gui.Selection.removeSelectionGate()
 
 
 if App.GuiUp:
