@@ -270,7 +270,7 @@ class ViewProviderCorner:
         if mode != 0:
             return None
 
-        taskd = CornerTaskPanel(self.Object)
+        taskd = CornerTaskPanel(self.Object, mode="edition")
         #taskd.obj = self.Object
         #taskd.update()
         Gui.Control.showDialog(taskd)
@@ -338,16 +338,17 @@ class _CommandCorner:
                 trimmingboundary.append(bound)
             corner = makeCorner(trimmedBody=sel[0].Object, trimmingBoundary=trimmingboundary)
         App.ActiveDocument.commitTransaction()
-        App.CornerDialog = CornerTaskPanel(corner)
+        App.CornerDialog = CornerTaskPanel(corner, mode="creation")
         Gui.Control.showDialog(App.CornerDialog)
 
 class CornerTaskPanel():
 
     "A task panel for the survey tool"
 
-    def __init__(self, fp):
+    def __init__(self, fp, mode):
         self.fp = fp
         self.dump = fp.dumpContent()
+        self.mode=mode
         self.form = QtGui.QWidget()
         icon = QtGui.QIcon(os.path.join(ICONPATH, "corner.svg"))
         add_icon = QtGui.QIcon(os.path.join(ICONPATH, "list-add.svg"))
@@ -626,9 +627,15 @@ class CornerTaskPanel():
 
         Recomputes the document, and leave edit mode.
         """
-        self.fp.restoreContent(self.dump)
+        if self.mode == "edition":
+            self.fp.restoreContent(self.dump)
+            Gui.ActiveDocument.resetEdit()
+        elif self.mode == "creation":
+            trimmedBody = self.fp.TrimmedBody
+            App.ActiveDocument.removeObject(self.fp.Name)
+            if trimmedBody:
+                trimmedBody.ViewObject.Visibility = True
         App.ActiveDocument.recompute()
-        Gui.ActiveDocument.resetEdit()
         return True
 
 
