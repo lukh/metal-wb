@@ -52,6 +52,11 @@ class _CommandTrim:
     def Activated(self):
         """Define what happen when the user clic on the tool"""
         import Draft
+        p = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        snapModes = p.GetString('snapModes')
+        nearState = snapModes[1]
+        if nearState == '0':
+            Gui.runCommand("Draft_Snap_Near")
         self.part = self.getMetalWBProfile(Gui.Selection.getSelection()[0])
         self.original_length = self.part.Height.Value
         start_point = App.Vector()
