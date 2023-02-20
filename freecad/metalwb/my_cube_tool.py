@@ -27,12 +27,12 @@ class _CommandmyCube:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "box.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("StarterKit", "MyCube"),
+            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "MyCube"),
             "Accel": "C, B",
-            "ToolTip": "<html><head/><body><p><b>Ajouter un cube.</b> \
+            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Add a cube</b> \
                     <br><br> \
-                    Aux dimensions de 15 mm. \
-                    </p></body></html>",
+                    1000 mm x 1000 mm x 500 mm  \
+                    </p></body></html>"),
         }
 
     def IsActive(self):

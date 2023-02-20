@@ -3,18 +3,34 @@ import os
 import FreeCADGui as Gui
 import FreeCAD as App
 from freecad.metalwb import ICONPATH
+from freecad.metalwb import TRANSLATIONSPATH
+
+
+# QT macro
+
+def QT_TRANSLATE_NOOP(scope, text):
+    return text
+
+if hasattr(App,"Qt"):
+    translate = App.Qt.translate
+else:
+    def translate(scope,text):
+        return text
+
+Gui.addLanguagePath(TRANSLATIONSPATH)
+
 
 class MetalWorkbench(Gui.Workbench):
 
-    MenuText = "MetalWB"
-    ToolTip = "Design of metalworking parts and assemblies"
+    MenuText = QT_TRANSLATE_NOOP("MetalWB", "MetalWB")
+    ToolTip = QT_TRANSLATE_NOOP("MetalWB", "Design of metalworking parts and assemblies")
     Icon = os.path.join(ICONPATH, "metalwb.svg")
 
     toolbox_welding = [
         "WarehouseProfiles",
         "MetalWB_Trim",
         "OverlapDetect",
-        "MetalWB_Corner"
+        "MetalWB_Corner",
     ]
     toolbox_drawing = [
         "Sketcher_NewSketch",
@@ -35,6 +51,7 @@ class MetalWorkbench(Gui.Workbench):
         return "Gui::PythonWorkbench"
 
     def Initialize(self):
+
         from freecad.metalwb import my_cube_tool
         from freecad.metalwb import trim_extend
         from freecad.metalwb import corner_tools

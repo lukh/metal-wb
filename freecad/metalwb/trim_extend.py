@@ -31,12 +31,12 @@ class _CommandTrim:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "trim_extend.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "MetalWB_Trim"),
+            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "Trim/Extend"),
             "Accel": "T, R",
-            "ToolTip": "<html><head/><body><p><b>Ajuster le profilé.</b> \
+            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Trim or extend profile</b> \
                     <br><br> \
-                    Ajuste le profilé en longueur. \
-                    </p></body></html>",
+                    Trim or extend the length of selected profile. \
+                    </p></body></html>"),
         }
 
     def IsActive(self):

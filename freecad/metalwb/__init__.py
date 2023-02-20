@@ -23,4 +23,4 @@ from .version import __version__
 RESOURCESPATH = os.path.join(os.path.dirname(__file__), "resources")
 ICONPATH = os.path.join(RESOURCESPATH, "icons")
 WAREHOUSEPATH = os.path.join(RESOURCESPATH, "images/warehouse")
-
+TRANSLATIONSPATH = os.path.join(RESOURCESPATH, "translations")

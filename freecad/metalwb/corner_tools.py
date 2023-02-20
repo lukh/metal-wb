@@ -1,35 +1,30 @@
 # coding: utf-8
 
 import FreeCAD as App
+#translate = App.Qt.translate
 import Part, ArchCommands
 import BOPTools.SplitAPI
 import os
 import math
 from freecad.metalwb import ICONPATH
 from freecad.metalwb import RESOURCESPATH
+from BimTranslateUtils import *
 
 if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
+    #from DraftTools import translate
+    #from PySide.QtCore import QT_TRANSLATE_NOOP
+
+# dummy function for the QT translator
+def QT_TRANSLATE_NOOP(ctxt,txt): 
+    return txt
+
+# use latest available translate function
+if hasattr(App, "Qt"):
+    translate = App.Qt.translate
 else:
-    # \cond
-    def translate(ctxt, txt):
-        """
-        Return a translated string.
-        ctxt : context in which the 'text' is in ; txt  : actual text that will be translated.
-        """
-        return txt
-
-
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        """
-        Return an untranslated string, to translate later.
-        Mostly needed for C++ where not all strings can handle translation.
-        """
-        return txt
-    # \endcond
+    from DraftTools import translate
 
 
 def makeCorner(trimmedBody=None, trimmingBoundary=None):
@@ -46,13 +41,13 @@ def makeCorner(trimmedBody=None, trimmingBoundary=None):
 class Corner:
     def __init__(self, obj):
         ''' Add some custom properties to our box feature '''
-        obj.addProperty("App::PropertyLink","TrimmedBody","Corner","Body to be trimmed").TrimmedBody=None
-        obj.addProperty("App::PropertyLinkSubList","TrimmingBoundary","Corner","Bodies that define boundaries").TrimmingBoundary=None
+        obj.addProperty("App::PropertyLink","TrimmedBody","Corner", QT_TRANSLATE_NOOP("App::Property", "Body to be trimmed")).TrimmedBody=None
+        obj.addProperty("App::PropertyLinkSubList","TrimmingBoundary","Corner", QT_TRANSLATE_NOOP("App::Property", "Bodies that define boundaries")).TrimmingBoundary=None
         #corner_types = ["End Trim", "End Miter", "End Butt1", "End Butt2",]
         corner_types = ["End Trim", "End Miter",]
-        obj.addProperty("App::PropertyEnumeration","CornerType","Corner", "Corner Type").CornerType=corner_types
+        obj.addProperty("App::PropertyEnumeration","CornerType","Corner", QT_TRANSLATE_NOOP("App::Property", "Corner Type")).CornerType=corner_types
         cut_types = ["Coped cut", "Simple cut",]
-        obj.addProperty("App::PropertyEnumeration","CutType","Corner", "Cut Type").CutType=cut_types
+        obj.addProperty("App::PropertyEnumeration","CutType","Corner", QT_TRANSLATE_NOOP("App::Property", "Cut Type")).CutType=cut_types
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -271,8 +266,6 @@ class ViewProviderCorner:
             return None
 
         taskd = CornerTaskPanel(self.Object, mode="edition")
-        #taskd.obj = self.Object
-        #taskd.update()
         Gui.Control.showDialog(taskd)
         return True
 
@@ -298,12 +291,12 @@ class _CommandCorner:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "corner.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "MetalWB_Corner"),
+            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "Corner"),
             "Accel": "M, C",
-            "ToolTip": "<html><head/><body><p><b>Create a corner</b> \
+            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Create a corner</b> \
                     <br><br> \
                     Select a profile then another profile's faces. \
-                    </p></body></html>",
+                    </p></body></html>"),
         }
 
     def IsActive(self):
@@ -457,14 +450,16 @@ class CornerTaskPanel():
 
     def retranslateUi(self, dlg):
         self.form.setWindowTitle(QtGui.QApplication.translate("MetalWB", "Corner Manager", None))
-        self.cornerTypeLabel.setText(QtGui.QApplication.translate("MetalWB", "Type de coin", None))
-        self.endTrimButton.setToolTip("Coupe brute")
-        self.endMiterButton.setToolTip("Coupe en biseau")
-        self.copedCutTypeButton.setToolTip("Coupe selon la forme")
-        self.simpleCutTypeButton.setToolTip("Coupe selon un plan")
-        self.trimmedBodyLabel.setText(QtGui.QApplication.translate("MetalWB", "Corps à couper", None))
-        self.trimmingBodiesLabel.setText(QtGui.QApplication.translate("MetalWB", "Outils d'ajustement", None))
-        self.cutTypeLabel.setText(QtGui.QApplication.translate("MetalWB", "Type de coupe", None))
+        self.cornerTypeLabel.setText(QtGui.QApplication.translate("MetalWB", "Corner type", None))
+        self.endTrimButton.setToolTip(QtGui.QApplication.translate("MetalWB", "End trim"))
+        self.endMiterButton.setToolTip(QtGui.QApplication.translate("MetalWB", "End miter"))
+        self.trimmedBodyLabel.setText(QtGui.QApplication.translate("MetalWB", "Trimmed body", None))
+        self.addTrimmedBodyButton.setToolTip(QtGui.QApplication.translate("MetalWB", "Set selected object to trimmed body"))
+        self.removeTrimmedBodyButton.setToolTip(QtGui.QApplication.translate("MetalWB", "Remove trimmed body"))
+        self.trimmingBodiesLabel.setText(QtGui.QApplication.translate("MetalWB", "Trimming boundary", None))
+        self.addTrimmingBodiesButton.setToolTip(QtGui.QApplication.translate("MetalWB", "Add selected object to trimming boundary"))
+        self.removeTrimmingBodiesButton.setToolTip(QtGui.QApplication.translate("MetalWB", "Remove selected object from trimming boundary"))
+        self.cutTypeLabel.setText(QtGui.QApplication.translate("MetalWB", "Cut type", None))
 
     def updateUi(self):
         if self.fp.CornerType == u"End Trim":

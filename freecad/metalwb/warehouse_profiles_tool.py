@@ -85,7 +85,7 @@ class Box(QtGui.QDialog):
         - checkbox = cb.
         """
 
-        self.setWindowTitle("Profile Warehouse")
+        self.setWindowTitle(QtGui.QApplication.translate("MetalWB", "Profile Warehouse"))
         self.setWindowIcon(QtGui.QIcon(os.path.join(ICONPATH, "warehouse_profiles.svg")))
 
         QtCore.Qt.WA_DeleteOnClose
@@ -109,12 +109,12 @@ class Box(QtGui.QDialog):
         hbox_img.addWidget(self.graphicsView)
 
         # OK button
-        btn_ok = QtGui.QPushButton("OK")
+        btn_ok = QtGui.QPushButton(QtGui.QApplication.translate("MetalWB", "OK"))
         btn_ok.setMinimumHeight(40)
         btn_ok.clicked.connect(self.onclick_ok)
 
         # Cancel button
-        btn_cancel = QtGui.QPushButton("Cancel")
+        btn_cancel = QtGui.QPushButton(QtGui.QApplication.translate("MetalWB", "Cancel"))
         btn_cancel.setMinimumHeight(40)
         btn_cancel.clicked.connect(self.onclick_cancel)
 
@@ -124,14 +124,14 @@ class Box(QtGui.QDialog):
         hbox_cmd.addWidget(btn_cancel)
 
         # Families section label
-        self.lbl_family = QtGui.QLabel("Family", self)
+        self.lbl_family = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Family"), self)
         new_font = QtGui.QFont(self.lbl_family.font())
         new_font.setPointSize(10)
         self.lbl_family.setFont(new_font)
 
         # Families section combo box
         self.combo_family = QtGui.QComboBox(self)
-        self.combo_family.setToolTip("Choose kind of profile")
+        self.combo_family.setToolTip(QtGui.QApplication.translate("MetalWB", "Choose kind of profile"))
         self.combo_family.addItems(self.fams_list)
         self.combo_family.setCurrentIndex(self.fams_list.index(self.fam))
         self.combo_family.activated[str].connect(self.on_combo_family_changed)
@@ -144,7 +144,7 @@ class Box(QtGui.QDialog):
         hbox_fam.addWidget(self.combo_family)
 
         # Size section label
-        self.lbl_size = QtGui.QLabel("Size", self)
+        self.lbl_size = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Size"), self)
         new_font = QtGui.QFont(self.lbl_size.font())
         new_font.setPointSize(10)
         self.lbl_size.setFont(new_font)
@@ -152,7 +152,7 @@ class Box(QtGui.QDialog):
 
         # Size section combo box
         self.combo_size = QtGui.QComboBox(self)
-        self.combo_size.setToolTip("Choose size")
+        self.combo_size.setToolTip(QtGui.QApplication.translate("MetalWB", "Choose size"))
         self.combo_size.addItems(self.dims_list)
         self.combo_size.setCurrentIndex(self.dims_list.index(self.dim))
         self.combo_size.activated[str].connect(self.on_combo_size_changed)
@@ -170,17 +170,17 @@ class Box(QtGui.QDialog):
         vbox_apply.addLayout(hbox_size)
 
         # Create 'Apply a profile' group box
-        self.group_box_apply = QtGui.QGroupBox("Apply a profile on selected wires :")
+        self.group_box_apply = QtGui.QGroupBox(QtGui.QApplication.translate("MetalWB", "Apply a profile on selected wires :"))
         self.group_box_apply.setLayout(vbox_apply)
 
         """ 'Dimmensions setting' group box """
 
         # Height - Label
-        self.lbl_height = QtGui.QLabel("Height or diameter", self)
+        self.lbl_height = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Height or diameter"), self)
         # Height - Spin box
         self.sb_height = QtGui.QDoubleSpinBox(self)
         sb_height = self.sb_height
-        sb_height.setToolTip("Adjust height")
+        sb_height.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust height"))
         sb_height.setDecimals(1)
         sb_height.setMinimum(0.1)
         sb_height.setMaximum(1000.0)
@@ -193,11 +193,11 @@ class Box(QtGui.QDialog):
         hbox_height.addWidget(sb_height)
 
         # Width - Label
-        self.lbl_width = QtGui.QLabel("Width", self)
+        self.lbl_width = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Width"), self)
         # Width - Spin box
         self.sb_width = QtGui.QDoubleSpinBox(self)
         sb_width = self.sb_width
-        sb_width.setToolTip("Adjust width")
+        sb_width.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust width"))
         sb_width.setDecimals(1)
         sb_width.setMinimum(0.0)
         sb_width.setMaximum(1000.0)
@@ -210,11 +210,11 @@ class Box(QtGui.QDialog):
         hbox_width.addWidget(sb_width)
 
         # Main Thickness - Label
-        self.lbl_main_thickness = QtGui.QLabel("Main Thickness", self)
+        self.lbl_main_thickness = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Main Thickness"), self)
         # Main Thickness - Spin box
         self.sb_main_thickness = QtGui.QDoubleSpinBox(self)
         sb_thickness = self.sb_main_thickness
-        sb_thickness.setToolTip("Adjust main or web thickness")
+        sb_thickness.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust main or web thickness"))
         sb_thickness.setDecimals(2)
         sb_thickness.setMinimum(0)
         sb_thickness.setMaximum(100.0)
@@ -227,11 +227,11 @@ class Box(QtGui.QDialog):
         hbox_thickness.addWidget(sb_thickness)
 
         # Flange Thickness - Label
-        self.lbl_flange_thickness = QtGui.QLabel("Flange Thickness", self)
+        self.lbl_flange_thickness = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Flange Thickness"), self)
         # Flange Thickness - Spin box
         self.sb_flange_thickness = QtGui.QDoubleSpinBox(self)
         sb_flange = self.sb_flange_thickness
-        sb_flange.setToolTip("Adjust flange thickness")
+        sb_flange.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust flange thickness"))
         sb_flange.setDecimals(1)
         sb_flange.setMinimum(0)
         sb_flange.setMaximum(100.0)
@@ -244,11 +244,11 @@ class Box(QtGui.QDialog):
         hbox_flange.addWidget(sb_flange)
 
         # Lenght - Label
-        self.lbl_length = QtGui.QLabel("Length", self)
+        self.lbl_length = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Length"), self)
         # Lenght - Spin box
         self.sb_length = QtGui.QDoubleSpinBox(self)
         sb_len = self.sb_length
-        sb_len.setToolTip("Set length if not attached")
+        sb_len.setToolTip(QtGui.QApplication.translate("MetalWB", "Set length if not attached"))
         sb_len.setDecimals(1)
         sb_len.setMinimum(0)
         sb_len.setMaximum(24000.0)
@@ -261,11 +261,11 @@ class Box(QtGui.QDialog):
         hbox_len.addWidget(sb_len)
 
         # Large Radius - Label
-        self.lbl_radius1 = QtGui.QLabel("Large radius", self)
+        self.lbl_radius1 = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Large radius"), self)
         # Large Radius - Spin box
         self.sb_radius1 = QtGui.QDoubleSpinBox(self)
         sb_r1 = self.sb_radius1
-        sb_r1.setToolTip("Adjust Radius 1")
+        sb_r1.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust Radius 1"))
         sb_r1.setDecimals(1)
         sb_r1.setMinimum(0)
         sb_r1.setMaximum(50)
@@ -278,11 +278,11 @@ class Box(QtGui.QDialog):
         hbox_r1.addWidget(sb_r1)
 
         # Small Radius - Label
-        self.lbl_radius2 = QtGui.QLabel("Small radius", self)
+        self.lbl_radius2 = QtGui.QLabel(QtGui.QApplication.translate("MetalWB", "Small radius"), self)
         # Small Radius - Spin box
         self.sb_radius2 = QtGui.QDoubleSpinBox(self)
         sb_r2 = self.sb_radius2
-        sb_r2.setToolTip("Adjust Radius 2")
+        sb_r2.setToolTip(QtGui.QApplication.translate("MetalWB", "Adjust Radius 2"))
         sb_r2.setDecimals(1)
         sb_r2.setMinimum(0)
         sb_r2.setMaximum(50)
@@ -305,42 +305,42 @@ class Box(QtGui.QDialog):
         vbox_dim.addLayout(hbox_r2)
 
         # 'Dimmensions settings' group box creation
-        self.group_box_dim = QtGui.QGroupBox("Dimmensions settings")
+        self.group_box_dim = QtGui.QGroupBox(QtGui.QApplication.translate("MetalWB", "Dimensions settings"))
         self.group_box_dim.setLayout(vbox_dim)
 
         """ Checkboxes group box """
 
         # Checkbox 1 / Fillet or not
-        self.cb_make_fillet = QtGui.QCheckBox("Make Fillets", self)
+        self.cb_make_fillet = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Make Fillets"), self)
         cb1 = self.cb_make_fillet
         cb1.setChecked(True)
         cb1.clicked.connect(self.on_checkbox1_active)
 
         # Checkbox 2 / Reverse attachment
-        self.cb_reverse_attachment = QtGui.QCheckBox("Reverse Attachment", self)
+        self.cb_reverse_attachment = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Reverse Attachment"), self)
         cb2 = self.cb_reverse_attachment
         cb2.clicked.connect(self.on_checkbox2_active)
 
         # Checkbox 3 / Height centered
-        self.cb_height_centered = QtGui.QCheckBox("Height Centered", self)
+        self.cb_height_centered = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Height Centered"), self)
         cb3 = self.cb_height_centered
         cb3.setChecked(True)
         cb3.clicked.connect(self.on_checkbox3_active)
 
         # Checkbox 4 / Widht centered
-        self.cb_width_centered = QtGui.QCheckBox("Width Centered", self)
+        self.cb_width_centered = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Width Centered"), self)
         cb4 = self.cb_width_centered
         cb4.setChecked(True)
         cb4.clicked.connect(self.on_checkbox4_active)
 
         # Checkbox 5 / Size in object name
-        self.size_in_name = QtGui.QCheckBox("Size in object name", self)
+        self.size_in_name = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Size in object name"), self)
         cb5 = self.size_in_name
         cb5.setChecked(True)
         cb5.clicked.connect(self.on_checkbox5_active)
 
         # Checkbox 6 / Combined bevel
-        self.combined_bevel = QtGui.QCheckBox("Combined Bevels", self)
+        self.combined_bevel = QtGui.QCheckBox(QtGui.QApplication.translate("MetalWB", "Combined Bevels"), self)
         cb6 = self.combined_bevel
         cb6.clicked.connect(self.on_checkbox6_active)
 
@@ -360,7 +360,7 @@ class Box(QtGui.QDialog):
         vbox_check.addLayout(hbox_34)
         vbox_check.addLayout(hbox_56)
 
-        self.group_box_check = QtGui.QGroupBox("Checkboxes")
+        self.group_box_check = QtGui.QGroupBox(QtGui.QApplication.translate("MetalWB", "Options"))
         self.group_box_check.setLayout(vbox_check)
 
         """ Attachment group box """
@@ -377,7 +377,7 @@ class Box(QtGui.QDialog):
         vbox_attach.addWidget(self.lbl_attach)
 
         # 'Attachment' group box creation
-        self.group_box_attach = QtGui.QGroupBox("Attachment")
+        self.group_box_attach = QtGui.QGroupBox(QtGui.QApplication.translate("MetalWB", "Attachment"))
         self.group_box_attach.setLayout(vbox_attach)
 
         """ Vertical layout """
@@ -389,6 +389,7 @@ class Box(QtGui.QDialog):
         vbox.addWidget(self.group_box_attach)
 
         self.setLayout(vbox)
+
 
     def onclick_cancel(self):
         self.close()
@@ -1546,11 +1547,11 @@ class _CommandWarehouseProfiles:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "warehouse_profiles.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("StarterKit", "WarehouseProfiles"),
+            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "WarehouseProfiles"),
             "Accel": "C, B",
-            "ToolTip": "<html><head/><body><p><b>Ajouter des profilés.</b> \
+            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Add profiles</b> \
                     <br><br> \
-                    </p></body></html>",
+                    </p></body></html>"),
         }
 
     def IsActive(self):
