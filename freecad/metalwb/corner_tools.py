@@ -8,13 +8,10 @@ import os
 import math
 from freecad.metalwb import ICONPATH
 from freecad.metalwb import RESOURCESPATH
-from BimTranslateUtils import *
 
 if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtCore, QtGui
-    #from DraftTools import translate
-    #from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # dummy function for the QT translator
 def QT_TRANSLATE_NOOP(ctxt,txt): 
