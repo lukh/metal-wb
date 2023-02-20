@@ -54,6 +54,12 @@ class _CommandTrim:
         import Draft
         p = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         snapModes = p.GetString('snapModes')
+        if not snapModes:
+            snapModes = '110001100000000'
+            p.SetString('snapModes', snapModes)
+            Gui.runCommand("Draft_Snap_Endpoint")
+            Gui.runCommand("Draft_Snap_Midpoint")
+            Gui.runCommand("Draft_Snap_Near")
         nearState = snapModes[1]
         if nearState == '0':
             Gui.runCommand("Draft_Snap_Near")
