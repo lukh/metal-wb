@@ -6,17 +6,16 @@ import Part
 
 if App.GuiUp:
     import FreeCADGui as Gui
-
     from PySide import QtCore, QtGui
-    from DraftTools import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt, txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
-    # \endcond
+    #from DraftTools import translate
+    #from PySide.QtCore import QT_TRANSLATE_NOOP
+#else:
+# \cond
+def translate(ctxt, txt):
+    return txt
+def QT_TRANSLATE_NOOP(ctxt, txt):
+    return txt
+# \endcond
 
 
 
@@ -31,9 +30,9 @@ class _CommandTrim:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "trim_extend.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "Trim/Extend"),
+            "MenuText": QtGui.QApplication.translate("MetalWB", "Trim/Extend"),
             "Accel": "T, R",
-            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Trim or extend profile</b> \
+            "ToolTip": QtGui.QApplication.translate("MetalWB", "<html><head/><body><p><b>Trim or extend profile</b> \
                     <br><br> \
                     Trim or extend the length of selected profile. \
                     </p></body></html>"),

@@ -1547,9 +1547,9 @@ class _CommandWarehouseProfiles:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "warehouse_profiles.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "WarehouseProfiles"),
+            "MenuText": QtGui.QApplication.translate("MetalWB", "WarehouseProfiles"),
             "Accel": "C, B",
-            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Add profiles</b> \
+            "ToolTip": QtGui.QApplication.translate("MetalWB", "<html><head/><body><p><b>Add profiles</b> \
                     <br><br> \
                     </p></body></html>"),
         }

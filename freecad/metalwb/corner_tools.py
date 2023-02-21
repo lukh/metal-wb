@@ -288,9 +288,9 @@ class _CommandCorner:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "corner.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "Corner"),
+            "MenuText": QtGui.QApplication.translate("MetalWB", "Corner"),
             "Accel": "M, C",
-            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Create a corner</b> \
+            "ToolTip": QtGui.QApplication.translate("MetalWB", "<html><head/><body><p><b>Create a corner</b> \
                     <br><br> \
                     Select a profile then another profile's faces. \
                     </p></body></html>"),

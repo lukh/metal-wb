@@ -40,9 +40,9 @@ class _CommandOverlap:
         from freecad.metalwb import ICONPATH
         return {
             "Pixmap": os.path.join(ICONPATH, "overlap.svg"),
-            "MenuText": QT_TRANSLATE_NOOP("MetalWB", "Overlap detection"),
+            "MenuText": QtGui.QApplication.translate("MetalWB", "Overlap detection"),
             "Accel": "C, B",
-            "ToolTip": QT_TRANSLATE_NOOP("MetalWB", "<html><head/><body><p><b>Detect overlap</b> \
+            "ToolTip": QtGui.QApplication.translate("MetalWB", "<html><head/><body><p><b>Detect overlap</b> \
                     <br><br> \
                     For selected objects. \
                     </p></body></html>"),
