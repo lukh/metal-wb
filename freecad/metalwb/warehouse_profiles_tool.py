@@ -134,7 +134,7 @@ class Box(QtGui.QDialog):
         self.combo_family.setToolTip(QtGui.QApplication.translate("MetalWB", "Choose kind of profile"))
         self.combo_family.addItems(self.fams_list)
         self.combo_family.setCurrentIndex(self.fams_list.index(self.fam))
-        self.combo_family.activated[str].connect(self.on_combo_family_changed)
+        self.combo_family.activated[int].connect(self.on_combo_family_changed)
         self.combo_family.textHighlighted.connect(self.on_FamilyChange)
         self.on_FamilyChange(self.fam)
 
@@ -155,7 +155,7 @@ class Box(QtGui.QDialog):
         self.combo_size.setToolTip(QtGui.QApplication.translate("MetalWB", "Choose size"))
         self.combo_size.addItems(self.dims_list)
         self.combo_size.setCurrentIndex(self.dims_list.index(self.dim))
-        self.combo_size.activated[str].connect(self.on_combo_size_changed)
+        self.combo_size.activated[int].connect(self.on_combo_size_changed)
 
         # Hbox for size section
         hbox_size = QtGui.QHBoxLayout()
@@ -577,7 +577,8 @@ class Box(QtGui.QDialog):
 
     
 
-    def on_combo_family_changed(self, txt):
+    def on_combo_family_changed(self, index):
+        txt = self.combo_family.currentText()
         self.on_FamilyChange( txt)
         self.fam = txt
         self.dims_list = listing_family_dimensions(self.lib_path, self.fam)
@@ -588,7 +589,8 @@ class Box(QtGui.QDialog):
         self.update_data()
         self.update_box()
 
-    def on_combo_size_changed(self, txt):
+    def on_combo_size_changed(self, index):
+        txt = self.combo_size.currentText()
         self.dim = txt
         self.update_data()
         self.update_box()
