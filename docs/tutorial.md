@@ -246,3 +246,53 @@ You can change the cut type: straight or following the other profile.
 ![alt text](tutorial.imgs/64-cuttype-1.png)
 ![alt text](tutorial.imgs/64-cuttype-2.png)
 
+
+
+## Organizing Objects
+
+That's the bad part.
+
+I find the tree view messy. Really messy.
+
+### Part Container
+
+I often use Part container for grouping profiles, sketchs, etc.
+
+![alt text](tutorial.imgs/70-part-container.png)
+![alt text](tutorial.imgs/71-part-container.png)
+
+You need to drag only one profile to the container... I don't know why, but FreeCAD is not happy about a group drag.
+
+Sometime parts and profile get out of the Part Container.
+
+
+
+### Fusion
+
+One can fuse profiles together.
+
+![alt text](tutorial.imgs/72-fusion.png)
+
+![alt text](tutorial.imgs/72-fusion-done.png)
+
+It allows to group objects. 
+
+
+## Using profiles in Part Design... ie, making holes !
+
+To use all of theses profiles in PartDesign, for instance, to make holes... in it.. !
+
+you need to use a fusion of the profile, and create a body...
+
+![Body](tutorial.imgs/80-body.png)
+
+1. Drag and drop the fusion into the body.
+
+![base feature](tutorial.imgs/81-basefeature.png)
+
+2. Now, you have a standard Part design Body...
+
+You can map a sketch to any face, and use Part design to do whatever you want !
+
+![Making Holes](tutorial.imgs/82-making-holes.png)
+![Holes Made](tutorial.imgs/83-holes-made.png)
