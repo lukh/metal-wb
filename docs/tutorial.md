@@ -142,3 +142,107 @@ There are a lot of options here. You can then edit the sketch, and create more l
 As you can see, the junctions are not that good (yet !). The profiles are centered on the skeleton, and stops right at the end of the edges.
 
 We are going to make corners, and bevels. There are two methods for that.
+
+
+### Via Bevels property
+
+It is my favorite for simple frame..
+
+Let's hide everything except the first frame we made...
+
+![alt text](tutorial.imgs/40-show-first-frame.png)
+
+1. Select one of the profile, and in the property section, go for Bevel Start/End Cut 1/2
+
+![alt text](image.png)
+
+There are 4 entries (Start / End Cut1 Cut2)
+
+That allows you to create bevels in the two axis, at the start or end of the profile.
+
+Negative angles works, and must be used to compensate directions.
+
+You can batch-modify that, by selecting all the profiles....
+
+![alt text](tutorial.imgs/42-batchs-bevels.png)
+
+And Voila ! a square frame !
+
+
+### Via Corners function
+
+Let's show the other base frame ...
+
+![alt text](tutorial.imgs/50-base-config.png)
+
+This method take longer, but allows for more complexs forms...
+
+We first must add offsets to the existing profiles...  (offsets are cool because it adds up to the dimension of the sketch !)
+
+1. add Offset (batch or single...)
+
+![alt text](tutorial.imgs/51-add-offset.png)
+
+2. Unselect all objects, and click on create corner
+
+![alt text](tutorial.imgs/52-create-corner.png)
+
+![alt text](tutorial.imgs/53-create-corner.png)
+
+Select the end miter option
+
+![alt text](tutorial.imgs/53-end-miter.png)
+
+3. In the 3D view, select the object (profile you want to cut)
+
+![alt text](tutorial.imgs/54-select-one.png)
+
+and click on the "Trimmed Body" "+" sign. It will add the profile to the body trimmed
+
+![alt text](tutorial.imgs/55-add-to-trimmed.png)
+
+
+The profile will hide, helping you selecting the trimming boundary.
+
+4. select the face of the profile you want to trim with the first profile, and add to trimming boundary into the corner manager.
+
+![alt text](tutorial.imgs/56-add-to-boundary.png)
+
+
+![alt text](tutorial.imgs/57-almost-ready.png)
+
+5. Press ok to validate.
+
+Now, you have one of the profile that has a nice miter joint.
+
+You have to do it again, swapping trimmed body and boundary to maake the other profile
+
+![alt text](tutorial.imgs/58-do-it-again.png)
+
+Notice the Corner objects ! They are build from "Square objects" from MetalWB.
+
+
+### More complex Corners
+
+Let's finish the 3 others corners of the second frame...
+
+![alt text](tutorial.imgs/60-startwith.png)
+![alt text](tutorial.imgs/61-bad-joint.png)
+
+When everything is showed again, you can see the vertical profiles are not cut as they should...
+
+Let's open again the corner manager, selecting "end trim"
+
+![alt text](tutorial.imgs/62-endtrim.png)
+
+1. Select the vertical profile first, add it to the trimmed body with the plus button,
+2. Select the face of the profile you want to cut with.. (here, I add to move the view and select the bottom **face**)
+
+![alt text](tutorial.imgs/63-select-the-face.png)
+
+
+You can change the cut type: straight or following the other profile.
+
+![alt text](tutorial.imgs/64-cuttype-1.png)
+![alt text](tutorial.imgs/64-cuttype-2.png)
+
