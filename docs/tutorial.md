@@ -47,6 +47,7 @@ You can change the size just below the family, the tool has a lot of predefined 
 4. And press OK in the warehouse profile window... (then, cancel to close the window !)
 
 ![Profiles](tutorial.imgs/14-profiles-done.png)
+
 ![Zoom in profile](tutorial.imgs/14-zoom-on-profile.png)
 
 ![Tree](tutorial.imgs/14-profile-tree.png) 
@@ -69,6 +70,7 @@ We can add more sketchs into our project:
 
 
 4. Now, change the position of the sketch:
+
 ![Base Placement](tutorial.imgs/20-sketch-base-placement.png)
 
 ![Sketch moved !](tutorial.imgs/20-sketch-base-placement-2.png)
@@ -95,6 +97,7 @@ You can create parametrics lines for joining two vertexes (points), theses lines
 3. Create Parametric Line
 
 ![Create parametric line](tutorial.imgs/24-create-parametric-line.png)
+
 ![alt text](tutorial.imgs/25-parametric-line.png)
 
 
@@ -120,6 +123,7 @@ We are going to "Map" the sketch to something else.
 1. Create a new Sketch, and set orientation to: YZ
 
 I added a circle so you can see where it is..
+
 ![alt text](tutorial.imgs/30-mapmode-sketch.png)
 
 2. Click on the map mode property:
@@ -208,7 +212,6 @@ The profile will hide, helping you selecting the trimming boundary.
 
 ![alt text](tutorial.imgs/56-add-to-boundary.png)
 
-
 ![alt text](tutorial.imgs/57-almost-ready.png)
 
 5. Press ok to validate.
@@ -227,6 +230,7 @@ Notice the Corner objects ! They are build from "Square objects" from MetalWB.
 Let's finish the 3 others corners of the second frame...
 
 ![alt text](tutorial.imgs/60-startwith.png)
+
 ![alt text](tutorial.imgs/61-bad-joint.png)
 
 When everything is showed again, you can see the vertical profiles are not cut as they should...
@@ -244,6 +248,7 @@ Let's open again the corner manager, selecting "end trim"
 You can change the cut type: straight or following the other profile.
 
 ![alt text](tutorial.imgs/64-cuttype-1.png)
+
 ![alt text](tutorial.imgs/64-cuttype-2.png)
 
 
@@ -259,6 +264,7 @@ I find the tree view messy. Really messy.
 I often use Part container for grouping profiles, sketchs, etc.
 
 ![alt text](tutorial.imgs/70-part-container.png)
+
 ![alt text](tutorial.imgs/71-part-container.png)
 
 You need to drag only one profile to the container... I don't know why, but FreeCAD is not happy about a group drag.
@@ -295,4 +301,5 @@ you need to use a fusion of the profile, and create a body...
 You can map a sketch to any face, and use Part design to do whatever you want !
 
 ![Making Holes](tutorial.imgs/82-making-holes.png)
+
 ![Holes Made](tutorial.imgs/83-holes-made.png)
