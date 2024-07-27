@@ -427,37 +427,25 @@ class Box(QtGui.QDialog):
         view_obj = Gui.ActiveDocument.getObject(obj.Name)
         view_obj.DisplayMode = "Flat Lines"
         link_sub = ""
-        # "try" block generates an exception if no block is selected ("except" blocks below)
-        try:
-            # Tuple assignment for edge
-            feature = selected_obj.Object
-            link_sub = (feature, (selected_obj.SubElementNames[indent]))
-            edge_name = selected_obj.SubElementNames[indent]
-            lg = selected_sub.Length
-            obj.MapMode = "NormalToEdge"
-            obj.Support = (feature, edge_name)
-            #
-            if not self.reverse_attachment:
-                #print("Not reverse attachment")
-                obj.MapPathParameter = 1
-            else:
-                #print("Reverse attachment")
-                obj.MapPathParameter = 0
-                obj.MapReversed = True
-            #
-            indent = indent + 1
-        # Exceptions
-        except NameError:
-            print("A variable is not defined.")
-        except AttributeError:
-            print("Error on the attribute assignment or reference fails.")
-        except ValueError:
-            print("A function gets an argument of correct type but improper value.")
-        except IndentationError:
-            print("There is an incorrect indentation.")
-        except:
-            print("Unidentified error.")
 
+        # Tuple assignment for edge
+        feature = selected_obj.Object
+        link_sub = (feature, (selected_obj.SubElementNames[indent]))
+        edge_name = selected_obj.SubElementNames[indent]
+        lg = selected_sub.Length
+        obj.MapMode = "NormalToEdge"
+        obj.Support = (feature, edge_name)
+        #
+        if not self.reverse_attachment:
+            #print("Not reverse attachment")
+            obj.MapPathParameter = 1
+        else:
+            #print("Reverse attachment")
+            obj.MapPathParameter = 0
+            obj.MapReversed = True
+        #
+        indent = indent + 1
+       
         # Abbreviation of parameters to call Profile class
         wd = self.sb_width.value()
         ht = self.sb_height.value()
