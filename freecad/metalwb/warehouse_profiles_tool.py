@@ -434,8 +434,12 @@ class Box(QtGui.QDialog):
         edge_name = selected_obj.SubElementNames[indent]
         lg = selected_sub.Length
         obj.MapMode = "NormalToEdge"
-        obj.Support = (feature, edge_name)
-        #
+
+        try:
+            obj.AttachmentSupport = (feature, edge_name)
+        except AttributeError:
+            obj.Support = (feature, edge_name)
+
         if not self.reverse_attachment:
             #print("Not reverse attachment")
             obj.MapPathParameter = 1
