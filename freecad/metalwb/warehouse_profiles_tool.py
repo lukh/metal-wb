@@ -1532,7 +1532,10 @@ def listing_family_dimensions(lib_path, fam):
 class _CommandWarehouseProfiles:
     def __init__(self):
         self.p = App.ParamGet("User parameter:BaseApp/Preferences/Mod/metalwb")
-        pass
+        self.lib_path = self.p.GetString("lib_path")
+        if self.lib_path == '':
+            self.lib_path = os.path.join(RESOURCESPATH, "Profiles.txt")
+        self.form = Box(self.lib_path)
 
     def GetResources(self):
         """
@@ -1562,17 +1565,16 @@ class _CommandWarehouseProfiles:
         """
         Define what happen when the user clic on the tool
         """
-        print("Warehouse profiles tool activated")
-        self.lib_path = self.p.GetString("lib_path")
-        if self.lib_path == '':
-            self.lib_path = os.path.join(RESOURCESPATH, "Profiles.txt")
-        form = Box(self.lib_path)
         Gui.Selection.clearSelection()
-        obs = SelObserver(form)
+
+        obs = SelObserver(self.form)
+
         Gui.Selection.addObserver(obs)
         Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')
-        form.show()
-        form.exec_()
+
+        self.form.show()
+        self.form.exec_()
+
         Gui.Selection.removeObserver(obs)
         Gui.Selection.removeSelectionGate()
 
