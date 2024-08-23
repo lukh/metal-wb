@@ -1565,7 +1565,7 @@ class _CommandWarehouseProfiles:
         """
         Define what happen when the user clic on the tool
         """
-        Gui.Selection.clearSelection()
+        # Gui.Selection.clearSelection()
 
         obs = SelObserver(self.form)
 
